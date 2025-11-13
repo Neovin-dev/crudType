@@ -1,5 +1,4 @@
-import * as express from 'express';
-import { type Request, type Response } from 'express';
+import express, { type Request, type Response } from 'express';
 
 const app = express();
 const PORT = 8080;
@@ -70,7 +69,7 @@ app.post('/users', (req:Request, res: Response) => {
 })
 
 app.put('/users/user/:id', (req:Request, res: Response) => {
-    const itemNo = parseInt(req.params.id);
+    const itemNo = parseInt(req.params.id!);
 
     const itemIndex = items.findIndex(item => item.id === itemNo);
 
@@ -86,14 +85,14 @@ app.put('/users/user/:id', (req:Request, res: Response) => {
 })
 
 app.patch('/users/user/:id', (req: Request, res:Response) => {
-    const itemId = parseInt(req.params.id); 
+    const itemId = parseInt(req.params.id? req.params.id : "1"); 
 
     const itemIndex = items.findIndex(item => item.id === itemId);
 
     const updatedItem = {
-        id: items[itemIndex].id, 
-        name: req.body.name ? req.body.name: items[itemIndex].name,
-        gender: req.body.gender ? req.body.gender: items[itemIndex].gender,
+        id: items[itemIndex]? items[itemIndex].id : itemId, 
+        name: req.body.name ? req.body.name: items[itemIndex]?.name,
+        gender: req.body.gender ? req.body.gender: items[itemIndex]?.gender,
     };
 
     items[itemIndex] = updatedItem;
@@ -101,7 +100,7 @@ app.patch('/users/user/:id', (req: Request, res:Response) => {
 })
 
 app.delete('/users/user/:id', (req: Request, res:Response) => {
-    const itemId = parseInt(req.params.id);
+    const itemId = parseInt(req.params.id!);
 
     const itemIndex = items.findIndex(item => item.id === itemId);
     const deleteItem = items[itemIndex]
