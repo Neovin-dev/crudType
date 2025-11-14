@@ -30,7 +30,7 @@ app.get('/users', (request : Request, response: Response) => {
 });
 
 app.get('/users/:id', (req: Request, res: Response) => {
-    const itemId = parseInt(req.params.id)
+    const itemId = parseInt(req.params.id? req.params.id: "0")
     const getID = items.findIndex(item => item.id === itemId);
     console.log(`GET Id user of ID: ${itemId}`)
     res.status(201).json(items[getID])
